@@ -10,11 +10,12 @@ from CommonFunction import CommonFunction
 
 # 親クラス作成
 class MakeDatabase(CommonFunction):
-    def __init__(self, race=False, past_race=False, horse_info=False, peds=False, colab=True):
+    def __init__(self, race=False, past_race=False, horse_info=False, peds=False, train=False, colab=True):
         self.race = race
         self.past_race = past_race
         self.horse_info = horse_info
         self.peds = peds
+        self.train = train
         if self.race==True:
             self.race_df = pd.DataFrame()
         if self.past_race==True:
@@ -23,9 +24,12 @@ class MakeDatabase(CommonFunction):
             self.horse_info_df = pd.DataFrame()
         if self.peds==True:
             self.peds_df = pd.DataFrame()
+        if self.train==True:
+            self.train_df = pd.DataFrame()
         self.colab = colab
         self.loc_dict = {'札幌': '01', '函館': '02', '福島': '03', '新潟': '04', '東京': '05', '中山': '06', '中京': '07', '京都': '08', '阪神': '09', '小倉': '10'}
     
+
     # 出馬表，過去レースデータ，当日出馬表に適用
     def edit_race_df(self, df):
         df1 = df.copy()
@@ -139,6 +143,7 @@ class MakeDatabase(CommonFunction):
 
         return df1
 
+
     # 競走馬基本情報編集
     def edit_horse_info(self, df):
         df1 = df.copy()
@@ -160,6 +165,25 @@ class MakeDatabase(CommonFunction):
 
         return df1
     
+
+    # 調教データ編集
+    def edit_train(self, df):
+        df1 = df.copy()
+        df1['Date'] = df1['Date'].map(lambda x: re.sub(r'\(.\)', '', x ))
+
+        df2 = df1['TimeAll'].str.split('li', expand=True)
+        col_list = ['6F', '5F', '4F', '3F', '1F']
+        df2.columns = col_list + ['Comment']
+
+        for col in col_list:
+            df2[col] = df2[col].map( lambda x : self.for_train_time(x) )
+            df2[col] = df2[col].map( lambda x : self.to_float(x) )
+        
+        df2['Lap'] = False
+        df2.loc[df2['3F'] < 20, 'Lap'] = True
+        
+        return pd.concat([df1, df2], axis=1).drop(['TimeAll', 'Eizou'], axis=1)
+
 
     # データ紐付け
     def conect_data(self, today=False):
@@ -233,6 +257,14 @@ class MakeDatabase(CommonFunction):
         except TypeError:
             print('for_kaisai: TypeError', x)
             return np.nan, x, np.nan
+    
+    def for_train_time(self, x):
+        time = re.search(r"[0-9]{2}\.[0-9]", x)
+        if time != None:
+          return time.group()
+        else:
+          return None
+
 
 # 払い戻しデータ加工
 class Return:    
