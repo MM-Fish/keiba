@@ -1,0 +1,8 @@
+[1209/201533.155:ERROR:directory_reader_win.cc(43)] FindFirstFile: 指定されたパスが見つかりません。 (0x3)
+[1209/201533.156:ERROR:prune_crash_reports.cc(36)] PruneCrashReportDatabase: Failed to get pending reports
+[1209/201830.076:ERROR:directory_reader_win.cc(43)] FindFirstFile: 指定されたパスが見つかりません。 (0x3)
+[1209/201830.078:ERROR:prune_crash_reports.cc(36)] PruneCrashReportDatabase: Failed to get pending reports
+[1209/202044.223:ERROR:directory_reader_win.cc(43)] FindFirstFile: 指定されたパスが見つかりません。 (0x3)
+[1209/202044.224:ERROR:prune_crash_reports.cc(36)] PruneCrashReportDatabase: Failed to get pending reports
+[1209/202758.311:ERROR:directory_reader_win.cc(43)] FindFirstFile: 指定されたパスが見つかりません。 (0x3)
+[1209/202758.314:ERROR:prune_crash_reports.cc(36)] PruneCrashReportDatabase: Failed to get pending reports

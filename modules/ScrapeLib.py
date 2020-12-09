@@ -6,7 +6,7 @@ import time
 import re
 from tqdm import tqdm
 from selenium import webdriver
-# import chromedriver_binary
+import chromedriver_binary
 from bs4 import BeautifulSoup
 import bs4
 import os
@@ -251,7 +251,7 @@ class ScrapeTable(CommonFunction):
 
     def df_update_train(self, train_all):
             train_all['HorseID_RaceID'] = train_all['HorseID'] + train_all['RaceID']
-            self.train_df['HorseID_RaceID'] = self.train.index.map(str) + self.past_race_df['RaceID']
+            self.train_df['HorseID_RaceID'] = self.train_df.index.map(str) + self.train_df['RaceID']
             horse_id_race_id_list = train_all['HorseID_RaceID'].unique()
             horse_id_race_id_new = self.train_df['HorseID_RaceID'].unique()
             horse_id_race_id_yet = [ i for i in horse_id_race_id_new if i not in horse_id_race_id_list]
@@ -288,7 +288,7 @@ class ScrapeTable(CommonFunction):
 # 出馬表(結果データベース)スクレイピングクラス
 class ScrapePostRace(ScrapeTable):
     def __init__(self, horse=False, peds=False, train=False, shutuba=False, horse_df_ids = [1,3], shutuba_df_ids = [0,1,2,4,5], colab=False):
-        super().__init__(horse=horse, peds=peds, horse_df_ids=horse_df_ids, colab=colab)
+        super().__init__(horse=horse, peds=peds, train=train, horse_df_ids=horse_df_ids, colab=colab)
         self.shutuba = shutuba
         if self.shutuba==True:
             self.shutuba_df = pd.DataFrame()
@@ -383,7 +383,7 @@ class ScrapePostRace(ScrapeTable):
 # 当日の出馬表スクレイピングクラス
 class ScrapeTodayRace(ScrapeTable):
     def __init__(self, today_race=False, horse=False, peds=False, train=False, horse_df_ids=[1,3], colab=False):
-        super().__init__(horse=horse, peds=peds, horse_df_ids=horse_df_ids, colab=colab)
+        super().__init__(horse=horse, peds=peds, train=train, horse_df_ids=horse_df_ids, colab=colab)
         self.today_race = today_race
         if self.today_race==True:
             self.today_race_df = pd.DataFrame()

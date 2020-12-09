@@ -213,6 +213,8 @@ class MakeDatabase(CommonFunction):
             self.horse_info_df.to_pickle(f'{dir_name}/horse_info_all.csv')
         if self.peds==True:
             self.peds_df.to_pickle(f'{dir_name}/peds_all.csv')
+        if self.train==True:
+            self.train_df.to_pickle(f'{dir_name}/train_all.csv')
 
 
     # データ更新

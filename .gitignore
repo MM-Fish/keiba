@@ -1,2 +1,4 @@
 __pycache__
 predict/
+data/
+.ipynb_checkpoints/
