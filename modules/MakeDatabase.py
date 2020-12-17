@@ -170,6 +170,7 @@ class MakeDatabase(CommonFunction):
     def edit_train(self, df):
         df1 = df.copy()
         df1['Date'] = df1['Date'].map(lambda x: re.sub(r'\(.\)', '', x ))
+        df1['Position'] = df1['Position'].map( lambda x : self.to_float(x) )
 
         df2 = df1['TimeAll'].str.split('li', expand=True)
         col_list = ['6F', '5F', '4F', '3F', '1F']
@@ -179,8 +180,8 @@ class MakeDatabase(CommonFunction):
             df2[col] = df2[col].map( lambda x : self.for_train_time(x) )
             df2[col] = df2[col].map( lambda x : self.to_float(x) )
         
-        df2['Lap'] = False
-        df2.loc[df2['3F'] < 20, 'Lap'] = True
+        df2['Lap'] = 'F'
+        df2.loc[df2['3F'] < 20, 'Lap'] = 'T'
         
         return pd.concat([df1, df2], axis=1).drop(['TimeAll', 'Eizou'], axis=1)
 

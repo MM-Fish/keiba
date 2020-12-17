@@ -5,7 +5,7 @@ import datetime
 import time
 import re
 from tqdm import tqdm
-from selenium import webdriver
+# from selenium import webdriver
 import chromedriver_binary
 from bs4 import BeautifulSoup
 import bs4
@@ -233,7 +233,7 @@ class ScrapeTable(CommonFunction):
 
 
     # データ更新
-    def df_update_horse(self, horse_info_all, past_race_all):
+    def df_update_horse(self, past_race_all):
         if 1 in self.horse_df_ids:
             horse_id_list = past_race_all['HorseID'].unique()
             horse_id_new = self.horse_info_df.index.unique()
@@ -241,18 +241,20 @@ class ScrapeTable(CommonFunction):
             self.horse_info_df = self.horse_info_df.loc[self.horse_info_df.index.isin(horse_id_yet), ]
 
         if 3 in self.horse_df_ids:
-            past_race_all['HorseID_RaceID'] = past_race_all['HorseID'] + past_race_all['RaceID']
+            past_race_all1 = past_race_all.copy()
+            past_race_all1['HorseID_RaceID'] = past_race_all1['HorseID'] + past_race_all1['RaceID']
             self.past_race_df['HorseID_RaceID'] = self.past_race_df.index.map(str) + self.past_race_df['RaceID']
-            horse_id_date_list = past_race_all['HorseID_RaceID'].unique()
+            horse_id_date_list = past_race_all1['HorseID_RaceID'].unique()
             horse_id_date_new = self.past_race_df['HorseID_RaceID'].unique()
             horse_id_date_yet = [ i for i in horse_id_date_new if i not in horse_id_date_list]
             self.past_race_df = self.past_race_df.loc[self.past_race_df['HorseID_RaceID'].isin(horse_id_date_yet), ]
             self.past_race_df = self.past_race_df.drop(['HorseID_RaceID'], axis=1)
 
     def df_update_train(self, train_all):
-            train_all['HorseID_RaceID'] = train_all['HorseID'] + train_all['RaceID']
+            train_all1 = train_all.copy()
+            train_all1['HorseID_RaceID'] = train_all1['HorseID'] + train_all1['RaceID']
             self.train_df['HorseID_RaceID'] = self.train_df.index.map(str) + self.train_df['RaceID']
-            horse_id_race_id_list = train_all['HorseID_RaceID'].unique()
+            horse_id_race_id_list = train_all1['HorseID_RaceID'].unique()
             horse_id_race_id_new = self.train_df['HorseID_RaceID'].unique()
             horse_id_race_id_yet = [ i for i in horse_id_race_id_new if i not in horse_id_race_id_list]
             self.train_df = self.train_df.loc[self.train_df['HorseID_RaceID'].isin(horse_id_race_id_yet), ]
