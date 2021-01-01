@@ -127,7 +127,8 @@ class MakeDatabase(CommonFunction):
         # Tuuka
         if 'Tuuka' in df1.columns:
             tuuka_df = df1['Tuuka'].str.split("-", expand=True)
-            tuuka_df.columns = [ f"{i}CRank" for i in range(1,5)].astype('float64')
+            tuuka_df.columns = [ f"{i}CRank" for i in range(1,5)]
+            tuuka_df = tuuka_df.astype('float64')
             df1.drop(["Tuuka"], axis=1, inplace=True)
             df1 = pd.concat([df1, tuuka_df], axis=1)
 
