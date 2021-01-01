@@ -5,8 +5,8 @@ import datetime
 import time
 import re
 from tqdm import tqdm
-# from selenium import webdriver
-import chromedriver_binary
+from selenium import webdriver
+# import chromedriver_binary
 from bs4 import BeautifulSoup
 import bs4
 import os

@@ -124,6 +124,13 @@ class MakeDatabase(CommonFunction):
             df1['Time'] = df1['Time'].map(self.for_time)
             to_float_list.append('Time')
 
+        # Tuuka
+        if 'Tuuka' in df1.columns:
+            tuuka_df = df1['Tuuka'].str.split("-", expand=True)
+            tuuka_df.columns = [ f"{i}C" for i in range(1,5)]
+            df1.drop(["Tuuka"], axis=1, inplace=True)
+            df1 = pd.concat([df1, tuuka_df], axis=1)
+
         # ID類以外の数字をfloatに変換
         for float_col in ['Number', 'Waku', 'No_', 'Ninki', 'Kinryou', 'CondCoef', 'SpdCoef', 'G3F']:
             if float_col in df1.columns:
